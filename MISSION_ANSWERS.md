@@ -96,5 +96,23 @@ content-type: application/json
 
 ---
 
+## Part 5: Scaling & Reliability
+
+### Exercise 5.1–5.5: Implementation notes & Stateless test
+- **Liveness (`/health`) vs Readiness (`/ready`):**
+  - `/health` kiểm tra process còn sống (luôn trả `200`, kể cả khi Redis tạm mất kết nối) để orchestrator không restart oan.
+  - `/ready` kiểm tra các dependency như Redis (`503` khi mất kết nối) để Load Balancer tạm ngưng route traffic tới instance đó.
+- **Vì sao state trong RAM bị hỏng khi scale nhiều instance:** Mỗi container có bộ nhớ RAM riêng. Khi Nginx round-robin request sang instance khác, instance mới không có lịch sử hội thoại trong RAM. Giải pháp là thiết kế **stateless** và đẩy state sang **Redis** dùng chung.
+- **Kết quả chạy `docker compose -p k5-day14-scaling up -d --build --scale agent=3` + `python test_stateless.py`:**
+```text
+Total requests: 5
+Instances used: {'instance-667337', 'instance-c22de4', 'instance-c191bf'}
+✅ All requests served despite different instances!
+Total messages: 10
+✅ Session history preserved across all instances via Redis!
+```
+
+---
+
 ## AI Log
 - Sử dụng AI hỗ trợ kiểm tra code mẫu, chạy lệnh test local và tổng hợp tài liệu `MISSION_ANSWERS.md`. Mọi kết quả chạy lệnh đều được thực thi và kiểm chứng trực tiếp trên máy.
