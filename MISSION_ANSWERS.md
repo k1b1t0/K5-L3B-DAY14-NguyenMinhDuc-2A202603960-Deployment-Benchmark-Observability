@@ -60,5 +60,41 @@ curl -sS -X POST "http://localhost:8000/ask?question=Hello"
 
 ---
 
+## Part 4: API Security
+
+### Exercise 4.1–4.3: Test results (API Key, JWT & Rate Limiting)
+**1. Bản develop (`AGENT_API_KEY=secret-key-123`) — thiếu key trả `401`, có key trả `200`:**
+```http
+=== 401 NO KEY ===
+HTTP/1.1 401 Unauthorized
+content-type: application/json
+
+=== 200 WITH KEY ===
+HTTP/1.1 200 OK
+content-type: application/json
+```
+
+**2. Bản production — lấy JWT tại `POST /auth/token` (`student`/`demo123`) và test rate limit (10 req/phút):**
+```text
+req 1..10 -> 200
+req 11    -> 429
+```
+Output `curl -i` khi vượt giới hạn (đã che token `Bearer <REDACTED>`):
+```http
+HTTP/1.1 429 Too Many Requests
+server: uvicorn
+x-ratelimit-limit: 10
+x-ratelimit-remaining: 0
+x-ratelimit-reset: 1795685093
+retry-after: 59
+content-type: application/json
+```
+
+### Exercise 4.4: Cost guard implementation
+- **Cách triển khai (`cost_guard.py`):** Trước khi gọi LLM, `check_budget(user_id)` kiểm tra tổng chi phí trong ngày của user (so với `daily_budget_usd`) và toàn hệ thống (so với `global_daily_budget_usd`). Nếu vượt ngưỡng user → trả `402 Payment Required`; vượt ngưỡng global → trả `503`. Sau khi LLM trả lời, `record_cost()` tính chi phí từ `input_tokens` và `output_tokens` rồi cộng dồn (trong production lưu vào Redis/DB).
+- **Vì sao cần cả Rate Limit và Cost Guard:** Rate limit bảo vệ **tốc độ** (tránh spam/DDoS làm quá tải server), còn Cost Guard bảo vệ **ngân sách** (vì một request prompt dài có thể tốn rất nhiều token/tiền dù số lượng request ít).
+
+---
+
 ## AI Log
 - Sử dụng AI hỗ trợ kiểm tra code mẫu, chạy lệnh test local và tổng hợp tài liệu `MISSION_ANSWERS.md`. Mọi kết quả chạy lệnh đều được thực thi và kiểm chứng trực tiếp trên máy.
