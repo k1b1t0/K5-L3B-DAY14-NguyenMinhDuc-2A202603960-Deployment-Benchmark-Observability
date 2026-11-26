@@ -137,5 +137,23 @@ Total messages: 10
 
 ---
 
+## Part 3: Cloud Deployment
+
+### Exercise 3.1 / 3.2: Deploy Agent Part 6 (`06-lab-complete/`)
+- **URL:** `https://<your-app>.railway.app` *(cập nhật sau khi `railway up` / Render Blueprint)*
+- **Screenshots:** `screenshots/dashboard.png`, `screenshots/running.png`, `screenshots/test.png`
+
+### So sánh `railway.toml` và `render.yaml`
+- **`railway.toml`** (định dạng TOML): cấu hình gọn theo `[build]` (`builder = "DOCKERFILE"`) và `[deploy]` (`healthcheckPath = "/health"`, `restartPolicyType`). Biến môi trường và dịch vụ Redis được cấu hình trực tiếp trên Railway Dashboard hoặc CLI (`railway variables set`).
+- **`render.yaml`** (định dạng YAML — Infrastructure as Code / Blueprint): khai báo toàn bộ service (`type: web`, `runtime: docker`, `healthCheckPath: /health`) kèm danh sách `envVars` ngay trong file; secret dùng `generateValue: true` hoặc `sync: false` để nhập tay trên dashboard mà không lộ trong Git.
+
+### Exercise 3.3: Cloud Run (`03-cloud-deployment/production-cloud-run/`)
+Pipeline CI/CD trong `cloudbuild.yaml` và `service.yaml` đi qua các bước:
+1. **Build:** `docker build` image từ source code và gắn tag theo `$COMMIT_SHA` / `latest`.
+2. **Push:** Đẩy image lên Artifact Registry / Container Registry của GCP.
+3. **Deploy:** Chạy `gcloud run deploy` để cập nhật Cloud Run service với image mới, cấu hình tài nguyên/concurrency/scaling theo `service.yaml` và inject biến môi trường/secrets.
+
+---
+
 ## AI Log
 - Sử dụng AI hỗ trợ kiểm tra code mẫu, chạy lệnh test local và tổng hợp tài liệu `MISSION_ANSWERS.md`. Mọi kết quả chạy lệnh đều được thực thi và kiểm chứng trực tiếp trên máy.
