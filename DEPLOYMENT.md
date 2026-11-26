@@ -1,25 +1,25 @@
 # Deployment Information
 
 ## Public URL
-https://<your-agent>.railway.app
+https://agent-v2-production-741bc002.up.railway.app
 
 ## Platform
-Railway (hoặc Render)
+Railway
 
 ## Test Commands
 
 ### Health & Readiness Check
 ```bash
-curl -sS -o /dev/null -w '%{http_code}\n' "https://<your-agent>.railway.app/health"   # 200
-curl -sS -o /dev/null -w '%{http_code}\n' "https://<your-agent>.railway.app/ready"    # 200
+curl -sS -o /dev/null -w '%{http_code}\n' "https://agent-v2-production-741bc002.up.railway.app/health"   # 200
+curl -sS -o /dev/null -w '%{http_code}\n' "https://agent-v2-production-741bc002.up.railway.app/ready"    # 200
 ```
 
 ### API Test (401 without key, 200 with key)
 ```bash
-curl -sS -o /dev/null -w '%{http_code}\n' -X POST "https://<your-agent>.railway.app/ask" \
+curl -sS -o /dev/null -w '%{http_code}\n' -X POST "https://agent-v2-production-741bc002.up.railway.app/ask" \
   -H 'Content-Type: application/json' -d '{"question":"Hello"}'  # 401
 
-curl -sS -o /dev/null -w '%{http_code}\n' -X POST "https://<your-agent>.railway.app/ask" \
+curl -sS -o /dev/null -w '%{http_code}\n' -X POST "https://agent-v2-production-741bc002.up.railway.app/ask" \
   -H 'Content-Type: application/json' -H "X-API-Key: $AGENT_API_KEY" \
   -d '{"question":"Hello"}'  # 200
 ```

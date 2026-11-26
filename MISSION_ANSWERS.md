@@ -140,7 +140,7 @@ Total messages: 10
 ## Part 3: Cloud Deployment
 
 ### Exercise 3.1 / 3.2: Deploy Agent Part 6 (`06-lab-complete/`)
-- **URL:** `https://<your-app>.railway.app` *(cập nhật sau khi `railway up` / Render Blueprint)*
+- **URL:** `https://agent-v2-production-741bc002.up.railway.app`
 - **Screenshots:** `screenshots/dashboard.png`, `screenshots/running.png`, `screenshots/test.png`
 
 ### So sánh `railway.toml` và `render.yaml`
