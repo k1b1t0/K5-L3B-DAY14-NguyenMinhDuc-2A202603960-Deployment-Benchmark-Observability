@@ -114,5 +114,28 @@ Total messages: 10
 
 ---
 
+## Part 6: Final Project (`06-lab-complete/`)
+
+```text
+  📋 Checklist Deliverable
+     ✅ Dockerfile (multi-stage, < 500 MB)
+     ✅ docker-compose.yml (agent + redis)
+     ✅ .dockerignore
+     ✅ Health check endpoint (GET /health)
+     ✅ Readiness endpoint (GET /ready)
+     ✅ API Key authentication
+     ✅ Rate limiting
+     ✅ Cost guard
+     ✅ Config từ environment variables
+     ✅ Structured logging
+     ✅ Graceful shutdown
+     ✅ Public URL ready (Railway / Render config)
+----------------------------------------------------------------
+  Result: 12/12 tiêu chí đạt · 43/43 checks passed
+  🎉 PASS 12/12 — PRODUCTION READY! Deploy nào!
+```
+
+---
+
 ## AI Log
 - Sử dụng AI hỗ trợ kiểm tra code mẫu, chạy lệnh test local và tổng hợp tài liệu `MISSION_ANSWERS.md`. Mọi kết quả chạy lệnh đều được thực thi và kiểm chứng trực tiếp trên máy.
