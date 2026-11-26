@@ -31,5 +31,34 @@ Kết quả:
 
 ---
 
+## Part 2: Docker
+
+### Exercise 2.1: Dockerfile questions
+1. **Base image:** `python:3.11` (bản full ~1 GB, chứa nhiều công cụ build không cần thiết khi chạy production).
+2. **Working directory:** `/app` (`WORKDIR /app`).
+3. **Thứ tự `COPY requirements.txt` trước `COPY . .`:** Để tận dụng Docker layer cache. Khi chỉ sửa code (`app.py`), layer `pip install` không bị rebuild lại.
+4. **Command mặc định:** `CMD ["python", "app.py"]`, expose port `8000`.
+
+### Exercise 2.2: Test container `my-agent:develop`
+```bash
+docker run -d --rm --name test-p2-dev -p 8000:8000 my-agent:develop
+curl -sS -X POST "http://localhost:8000/ask?question=Hello"
+# {"answer":"Đây là câu trả lời từ AI agent (mock). Trong production, đây sẽ là response từ OpenAI/Anthropic."}
+```
+
+### Exercise 2.3: Image size comparison (đo bằng `docker images`)
+- **Develop (`my-agent:develop`):** `1.15GB` (1,150 MB)
+- **Production (`my-agent:advanced`, multi-stage `python:3.11-slim`):** `163MB`
+- **Difference:** Giảm **~85.8%** dung lượng (nhờ tách stage `builder` chứa `gcc` và chỉ copy gói đã cài sang stage `runtime` dùng `slim`).
+
+### Exercise 2.4: Docker Compose stack (`02-docker/production/`)
+- **Sơ đồ services:** `Client` → `nginx` (port 80, reverse proxy) → `agent` (FastAPI) → `redis` (cache/state) & `qdrant` (vector DB) trên internal network.
+- **Kết quả test qua Nginx (`GET http://localhost:80/health`):**
+```json
+{"status":"ok","uptime_seconds":2.0,"version":"2.0.0","timestamp":"2026-11-26T09:23:16.347215"}
+```
+
+---
+
 ## AI Log
 - Sử dụng AI hỗ trợ kiểm tra code mẫu, chạy lệnh test local và tổng hợp tài liệu `MISSION_ANSWERS.md`. Mọi kết quả chạy lệnh đều được thực thi và kiểm chứng trực tiếp trên máy.
