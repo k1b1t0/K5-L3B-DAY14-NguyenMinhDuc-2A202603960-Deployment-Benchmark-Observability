@@ -109,10 +109,10 @@ Chọn 1 trace chậm nhất bạn tìm được:
 
 | Số instance | RPS | p50 (ms) | p95 (ms) | p99 (ms) | Failures |
 |---|---|---|---|---|---|
-| 1 | | | | | |
-| 3 | | | | | |
+| 1 | 65.31 | 190 | 310 | 1700 | 78 (1.00%) |
+| 3 | 65.27 | 200 | 390 | 1700 | 70 (0.90%) |
 
-**Giải thích kết quả:** ...
+**Giải thích kết quả:** Scale lên 3 instance không làm tăng RPS hay giảm p95 vì tải 100 users với `locustfile` có `wait_time` đang bị giới hạn bởi tốc độ sinh tải của Locust / độ trễ giả lập cố định của `mock_llm` (~200ms/request), chưa chạm ngưỡng bão hòa CPU của 1 instance.
 
 ---
 
