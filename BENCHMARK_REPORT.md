@@ -71,10 +71,10 @@
 
 ### 4.1 Screenshot
 
-- [ ] Dashboard Grafana khi đang có tải (thấy rõ Golden Signals) — `screenshots/grafana-dashboard.png`
-- [ ] Một trace chậm trong Jaeger (thấy span nào chiếm thời gian) — `screenshots/jaeger-slow-trace.png`
+- [x] Dashboard Grafana khi đang có tải (thấy rõ Golden Signals) — `screenshots/grafana-dashboard.png`
+- [x] Một trace chậm trong Jaeger (thấy span nào chiếm thời gian) — `screenshots/jaeger-slow-trace.png`
 - [ ] Một trace lỗi trong Jaeger (có event `exception`) — `screenshots/jaeger-error-trace.png`
-- [ ] Trang Alerts của Prometheus với ít nhất 2 alert đang **firing** — `screenshots/prometheus-alert-firing.png`
+- [x] Trang Alerts của Prometheus với alert đang **firing** — `screenshots/prometheus-alert-firing.png`
 
 ### 4.2 Thí nghiệm "phá hệ thống"
 
@@ -94,9 +94,9 @@ Chạy eval định kỳ trên golden dataset (CI/CD quality gate hoặc canary 
 
 Chọn 1 trace chậm nhất bạn tìm được:
 
-- `trace_id`: ...
-- Tổng thời gian: ... ms
-- Span chiếm nhiều thời gian nhất: ... (... ms, ...%)
+- `trace_id`: `e14009fdc4ad2e56526dd6884b0506ba`
+- Tổng thời gian: `308 ms`
+- Span chiếm nhiều thời gian nhất: `chat mock-llm-small` (`183 ms`, `59.4%`)
 - Dòng log tương ứng (grep theo `trace_id`):
 
 ```json
